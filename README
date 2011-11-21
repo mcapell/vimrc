@@ -1,6 +1,6 @@
 Installation:
 
-git clone btoolkit@btoolkit.com:/var/cache/git/vim.git ~/.vim
+git clone git://github.com/mcapell/vimrc.git ~/.vim
 
 Create symlinks:
 
