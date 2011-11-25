@@ -89,6 +89,7 @@ set foldmethod=marker
 set foldmarker=//{,//}
 set foldmarker=/*{,}*/
 set foldmarker=\"{,\"}
+set foldmarker=#{,#}
 
 " Super Clever Tab
 function! SuperCleverTab()
