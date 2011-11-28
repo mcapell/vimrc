@@ -8,7 +8,6 @@ call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 
 "}
-
 "{ ======= General Options =======
 " Show numbers by default
 set number
@@ -88,8 +87,8 @@ set scrolloff=3
 set foldmethod=marker
 set foldmarker=//{,//}
 set foldmarker=/*{,}*/
-set foldmarker=\"{,\"}
 set foldmarker=#{,#}
+set foldmarker=\"{,\"}
 
 " Super Clever Tab
 function! SuperCleverTab()
@@ -122,6 +121,9 @@ map <C-right> <ESC>:bn<CR>
 map <C-left> <ESC>:bp<CR>
 " Editing Source/Include files - Prevent the exit if an error occurs
 map gf :edit <cfile><CR>
+
+" FX Functions
+map <F2> <ESC>:NERDTreeToggle<CR>
 
 "}
 "{ ======= Matching & Highlights =======
