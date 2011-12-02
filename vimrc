@@ -125,6 +125,9 @@ map gf :edit <cfile><CR>
 " FX Functions
 map <F2> <ESC>:NERDTreeToggle<CR>
 
+" Setting phtml as html filetype
+au BufNewFile,BufRead *.phtml set filetype=html
+
 "}
 "{ ======= Matching & Highlights =======
 " == Highlights ==
