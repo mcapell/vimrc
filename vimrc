@@ -116,9 +116,11 @@ inoremap <Tab> <C-R>=SuperCleverTab()<cr>
 "{ ======= Mappings =======
 " Toggle Folding
 nnoremap <space> za
+
 " Moving along buffers
 map <C-right> <ESC>:bn<CR>
 map <C-left> <ESC>:bp<CR>
+
 " Editing Source/Include files - Prevent the exit if an error occurs
 map gf :edit <cfile><CR>
 
@@ -127,6 +129,9 @@ map <F2> <ESC>:NERDTreeToggle<CR>
 
 " Setting phtml as html filetype
 au BufNewFile,BufRead *.phtml set filetype=html
+
+" Abbreviations
+abbrev btk "Marc Capell - bToolkit.com"
 
 "}
 "{ ======= Matching & Highlights =======
@@ -140,9 +145,6 @@ set cursorline
 
 "}
 "{ ======= Plugins =======
-au FileType xhtml,xml source ~/.vim/ftplugin/html_autoclosetag.vim
-
-" HTML/XHTML mapping options
-let g:html_tag_case = 'lowercase'
-let g:do_xhtml_mappings = 'yes'
+" Plugins added by Pathogen - just add the plugin to .vim/bundle/pluginName/* and
+" plugin will be added.
 "}
