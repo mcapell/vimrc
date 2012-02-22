@@ -147,4 +147,8 @@ set cursorline
 "{ ======= Plugins =======
 " Plugins added by Pathogen - just add the plugin to .vim/bundle/pluginName/* and
 " plugin will be added.
+
+" Plugin preferences
+" snipMate preferences
+let g:snips_author = 'Marc Capell - bToolkit.com'
 "}
