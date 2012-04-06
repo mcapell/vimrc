@@ -3,9 +3,21 @@
 "{ ======= Prepend Options =======
 " Setting filetype off, before call pathogen
 :filetype off
+" To disable a plugin, add it's bundle name to the following list
+let g:pathogen_disabled = []
+
+" Disable snipMate on gVim
+if has('gui_running')
+	call add(g:pathogen_disabled, 'snipmate')
+	call add(g:pathogen_disabled, 'nerdtree')
+	call add(g:pathogen_disabled, 'html5')
+endif
+
+" Calling pathogen
 call pathogen#runtime_append_all_bundles()
-"call pathogen#infect()
+call pathogen#infect()
 call pathogen#helptags()
+
 
 "}
 "{ ======= General Options =======
