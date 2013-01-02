@@ -10,3 +10,6 @@
 [submodule "bundle/nerdtree"]
 	path = bundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree.git
+[submodule "bundle/python_fold"]
+	path = bundle/python_fold
+	url = https://github.com/mcapell/python_fold.git

@@ -1,7 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
-let g:netrw_dirhist_1='/home/marc/android/projects'
-let g:netrw_dirhist_2='/home/marc/android/projects/socialhub'
-let g:netrw_dirhist_3='/home/marc/android/projects'
-let g:netrw_dirhist_4='/home/marc/.vim/eclim'
-let g:netrw_dirhist_5='/home/marc/android/projects/socialhub'
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/Users/marc/Documents/workspace/GPRNavigator/GPRNavigator'
+let g:netrw_dirhist_2='/Users/marc/Documents/workspace/nomorecode/geocode/emi'
+let g:netrw_dirhist_3='/Users/marc/Documents/workspace/nomorecode/NavCode'
+let g:netrw_dirhist_4='/Users/marc/Documents/workspace/nomorecode/geocode/emi'
+let g:netrw_dirhist_5='/Users/marc/Documents/bToolkit/django-example/basicpoll'
+let g:netrw_dirhist_6='/Users/marc/Documents/workspace/nomorecode/geocode/emi'

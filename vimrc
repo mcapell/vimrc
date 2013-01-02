@@ -43,7 +43,7 @@ set nocompatible
 filetype plugin on
 
 " Custom title
-let &titlestring = "[ vim(Marc::bToolkit) ]"
+let &titlestring = "[ vim(Marc::nomorecode) ]"
 set title
 
 " Status line
@@ -97,9 +97,9 @@ set scrolloff=3
 
 " Folding options
 set foldmethod=marker
-set foldmarker=//{,//}
-set foldmarker=/*{,}*/
 set foldmarker=#{,#}
+set foldmarker=//{,//}
+"set foldmarker=/*{,}*/
 set foldmarker=\"{,\"}
 
 " Super Clever Tab
@@ -144,13 +144,15 @@ au BufNewFile,BufRead *.phtml set filetype=html
 
 " Abbreviations
 abbrev btk "Marc Capell - bToolkit.com"
+abbrev marc "Marc Capell <marc@nomorecode.com>"
 
 "}
 "{ ======= Matching & Highlights =======
 " == Highlights ==
-highlight clear CursorLine SpellBad
-highlight CursorLine guibg=lightblue ctermbg=darkgray
+highlight clear CursorLine SpellBad Cursor
+highlight CursorLine guibg=lightblue ctermbg=238
 highlight SpellBad ctermbg=red term=bold
+highlight Cursor ctermbg=235
 " == Match's ==
 " Change the background colour from cursor line
 set cursorline
@@ -162,5 +164,5 @@ set cursorline
 
 " Plugin preferences
 " snipMate preferences
-let g:snips_author = 'Marc Capell - bToolkit.com'
+let g:snips_author = 'Marc Capell <marc@nomorecode.com>'
 "}
