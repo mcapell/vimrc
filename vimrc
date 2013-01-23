@@ -80,7 +80,7 @@ set tabstop=4
 set shiftwidth=4
 
 " Auto expand tabs to spaces
-"set expandtab
+set expandtab
 
 " Auto indent after a {
 set autoindent
@@ -137,6 +137,7 @@ map <C-left> <ESC>:bp<CR>
 map gf :edit <cfile><CR>
 
 " FX Functions
+map <F1> <ESC>:help
 map <F2> <ESC>:NERDTreeToggle<CR>
 
 " Setting phtml as html filetype
