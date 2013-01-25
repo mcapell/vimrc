@@ -18,7 +18,6 @@ call pathogen#runtime_append_all_bundles()
 call pathogen#infect()
 call pathogen#helptags()
 
-
 "}
 "{ ======= General Options =======
 " Show numbers by default
@@ -33,6 +32,9 @@ set backspace=start,eol
 " Syntax on/off
 syntax on
 
+" Color style
+set t_Co=16
+
 " Paste from other app's
 "set paste
 
@@ -46,8 +48,7 @@ filetype plugin on
 let &titlestring = "[ vim(Marc::nomorecode) ]"
 set title
 
-" Status line
-set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v]\ [%p%%]\ [LEN=%L]
+" Status line - Using powerline plugin
 set laststatus=2
 
 " Languajes
@@ -166,4 +167,7 @@ set cursorline
 " Plugin preferences
 " snipMate preferences
 let g:snips_author = 'Marc Capell <marc@nomorecode.com>'
+
+" Powerline preferences
+let g:Powerline_symbols = 'unicode'
 "}
