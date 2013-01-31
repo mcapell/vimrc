@@ -146,7 +146,7 @@ au BufNewFile,BufRead *.phtml set filetype=html
 
 " Abbreviations
 abbrev btk "Marc Capell - bToolkit.com"
-abbrev marc "Marc Capell <marc@nomorecode.com>"
+abbrev Marc "Marc Capell <marc@nomorecode.com>"
 
 "}
 "{ ======= Matching & Highlights =======
@@ -170,4 +170,7 @@ let g:snips_author = 'Marc Capell <marc@nomorecode.com>'
 
 " Powerline preferences
 let g:Powerline_symbols = 'unicode'
+
+" NERDTree preferences
+let g:NERDTreeDirArrows = 1
 "}
