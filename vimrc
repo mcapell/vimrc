@@ -27,7 +27,7 @@ set number
 set showmatch
 
 " Repair wired terminal/vim settings
-set backspace=start,eol
+"set backspace=start,eol
 
 " Syntax on/off
 syntax on
@@ -144,9 +144,16 @@ map <F2> <ESC>:NERDTreeToggle<CR>
 " Setting phtml as html filetype
 au BufNewFile,BufRead *.phtml set filetype=html
 
+" Setting golang as filetype
+au BufNewFile,BufRead *.go set filetype=Go
+
 " Abbreviations
 abbrev btk "Marc Capell - bToolkit.com"
 abbrev Marc "Marc Capell <marc@nomorecode.com>"
+
+" Scroll the other window in a Split
+nmap <A-j> <C-w>W<C-e><C-w><C-w>W<C-e><C-w>W
+nmap <A-k> <C-w>W<C-e><C-w><C-w>W<C-y><C-w>W
 
 "}
 "{ ======= Matching & Highlights =======
