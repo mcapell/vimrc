@@ -147,10 +147,6 @@ au BufNewFile,BufRead *.phtml set filetype=html
 " Setting golang as filetype
 au BufNewFile,BufRead *.go set filetype=Go
 
-" Abbreviations
-abbrev btk "Marc Capell - bToolkit.com"
-abbrev Marc "Marc Capell <marc@nomorecode.com>"
-
 " Scroll the other window in a Split
 nmap <A-j> <C-w>W<C-e><C-w><C-w>W<C-e><C-w>W
 nmap <A-k> <C-w>W<C-e><C-w><C-w>W<C-y><C-w>W
