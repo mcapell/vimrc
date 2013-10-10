@@ -1,4 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
-let g:netrw_dirhist_1='/Users/marc/Documents/workspace/nomorecode/eyecode/src/app/default'
-let g:netrw_dirhist_2='/Users/marc/Documents/workspace/guia-iphone/lazarusbcn/www'
