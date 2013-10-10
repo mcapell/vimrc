@@ -1,6 +1,7 @@
 "Configuració Vim per Marc Capell v1.0 - 17/10/2011
+"Configuració Vim per Marc Capell v1.1 - 13/08/2013
 
-"{ ======= Prepend Options =======
+"{{{ ======= Prepend Options =======
 " Setting filetype off, before call pathogen
 :filetype off
 " To disable a plugin, add it's bundle name to the following list
@@ -18,8 +19,9 @@ call pathogen#runtime_append_all_bundles()
 call pathogen#infect()
 call pathogen#helptags()
 
-"}
-"{ ======= General Options =======
+"}}}
+
+"{{{ ======= General Options =======
 " Show numbers by default
 set number
 
@@ -27,16 +29,13 @@ set number
 set showmatch
 
 " Repair wired terminal/vim settings
-"set backspace=start,eol
+set backspace=start,eol,indent
 
 " Syntax on/off
 syntax on
 
 " Color style
 set t_Co=16
-
-" Paste from other app's
-"set paste
 
 " Set no compatible, for boosting Vim's capabilities
 set nocompatible
@@ -58,13 +57,17 @@ set spelllang=ca,en,es
 source $HOME/.vim/abbreviations.vim
 
 " Colorscheme
-colorscheme delek
+set background=dark
+colorscheme solarized
 
 " Setting up Omnifunction
 set omnifunc=
 
-"}
-"{ ======= Searching options =======
+" Unset Swap File
+set noswapfile
+"}}}
+
+"{{{ ======= Searching options =======
 " Highlighted search results
 set hlsearch
 
@@ -74,8 +77,9 @@ set incsearch
 " Case insensitive searches
 set ignorecase
 
-"}
-"{ ======= Showing the code & coding options =======
+"}}}
+
+"{{{ ======= Showing the code & coding options =======
 " Set standard settings
 set tabstop=4
 set shiftwidth=4
@@ -98,10 +102,7 @@ set scrolloff=3
 
 " Folding options
 set foldmethod=marker
-set foldmarker=#{,#}
-set foldmarker=//{,//}
-"set foldmarker=/*{,}*/
-set foldmarker=\"{,\"}
+set foldmarker={{{,}}}
 
 " Super Clever Tab
 function! SuperCleverTab()
@@ -125,8 +126,35 @@ endfunction
 "bind function to the tab key
 inoremap <Tab> <C-R>=SuperCleverTab()<cr>
 
-"}
-"{ ======= Mappings =======
+" Show end-of-line whitespaces
+set list
+set listchars=trail:·
+
+"}}}
+
+"{{{ ======= Code Style: Language Specific Settings =======
+" ===== JavaScript =====
+autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
+
+" ===== HTML / CSS / Jade =====
+autocmd FileType html setlocal shiftwidth=2 tabstop=2
+autocmd FileType css setlocal shiftwidth=2 tabstop=2
+autocmd FileType jade setlocal shiftwidth=2 tabstop=2
+
+" Setting phtml as html filetype
+au BufNewFile,BufRead *.phtml set filetype=html
+
+" ===== Python =====
+" Disable smartindent on # comments.
+autocmd FileType python inoremap # X^H#
+
+" ===== Golang =====
+" Setting golang as filetype
+au BufNewFile,BufRead *.go set filetype=Go
+
+"}}}
+
+"{{{ ======= Mappings =======
 " Toggle Folding
 nnoremap <space> za
 
@@ -141,29 +169,26 @@ map gf :edit <cfile><CR>
 map <F1> <ESC>:help
 map <F2> <ESC>:NERDTreeToggle<CR>
 
-" Setting phtml as html filetype
-au BufNewFile,BufRead *.phtml set filetype=html
-
-" Setting golang as filetype
-au BufNewFile,BufRead *.go set filetype=Go
-
 " Scroll the other window in a Split
 nmap <A-j> <C-w>W<C-e><C-w><C-w>W<C-e><C-w>W
 nmap <A-k> <C-w>W<C-e><C-w><C-w>W<C-y><C-w>W
 
-"}
-"{ ======= Matching & Highlights =======
+"}}}
+
+"{{{ ======= Matching & Highlights =======
 " == Highlights ==
 highlight clear CursorLine SpellBad Cursor
 highlight CursorLine guibg=lightblue ctermbg=238
 highlight SpellBad ctermbg=red term=bold
 highlight Cursor ctermbg=235
+
 " == Match's ==
 " Change the background colour from cursor line
 set cursorline
 
-"}
-"{ ======= Plugins =======
+"}}}
+
+"{{{ ======= Plugins =======
 " Plugins added by Pathogen - just add the plugin to .vim/bundle/pluginName/* and
 " plugin will be added.
 
@@ -176,4 +201,4 @@ let g:Powerline_symbols = 'unicode'
 
 " NERDTree preferences
 let g:NERDTreeDirArrows = 1
-"}
+"}}}
