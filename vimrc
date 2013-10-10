@@ -146,7 +146,7 @@ au BufNewFile,BufRead *.phtml set filetype=html
 
 " ===== Python =====
 " Disable smartindent on # comments.
-autocmd FileType python inoremap # X^H#
+autocmd FileType python inoremap # X#
 
 " ===== Golang =====
 " Setting golang as filetype
