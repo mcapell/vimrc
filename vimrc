@@ -201,4 +201,5 @@ let g:Powerline_symbols = 'unicode'
 
 " NERDTree preferences
 let g:NERDTreeDirArrows = 1
+let g:NERDTreeShowBookmarks = 1
 "}}}
