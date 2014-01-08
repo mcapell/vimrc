@@ -9,9 +9,9 @@ let g:pathogen_disabled = []
 
 " Disable snipMate on gVim
 if has('gui_running')
-	call add(g:pathogen_disabled, 'snipmate')
-	call add(g:pathogen_disabled, 'nerdtree')
-	call add(g:pathogen_disabled, 'html5')
+    call add(g:pathogen_disabled, 'snipmate')
+    call add(g:pathogen_disabled, 'nerdtree')
+    call add(g:pathogen_disabled, 'html5')
 endif
 
 " Calling pathogen
@@ -24,9 +24,6 @@ call pathogen#helptags()
 "{{{ ======= General Options =======
 " Show numbers by default
 set number
-
-" Show matching brackets
-set showmatch
 
 " Repair wired terminal/vim settings
 set backspace=start,eol,indent
@@ -53,9 +50,6 @@ set laststatus=2
 " Languajes
 set spelllang=ca,en,es
 
-" Templates for programming
-source $HOME/.vim/abbreviations.vim
-
 " Colorscheme
 set background=dark
 colorscheme solarized
@@ -65,9 +59,7 @@ set omnifunc=
 
 " Unset Swap File
 set noswapfile
-"}}}
 
-"{{{ ======= Searching options =======
 " Highlighted search results
 set hlsearch
 
@@ -77,9 +69,18 @@ set incsearch
 " Case insensitive searches
 set ignorecase
 
+" Change the background colour from cursor line
+set cursorline
+
+" Let scroll Vim using the mouse.
+set mouse=nicr
+
+" Templates for programming
+source $HOME/.vim/abbreviations.vim
+
 "}}}
 
-"{{{ ======= Showing the code & coding options =======
+"{{{ ======= Coding Options =======
 " Set standard settings
 set tabstop=4
 set shiftwidth=4
@@ -91,6 +92,9 @@ set expandtab
 set autoindent
 set smartindent
 
+" Show matching brackets
+set showmatch
+
 " Do not wrap lines automatically
 set nowrap
 
@@ -98,7 +102,7 @@ set nowrap
 set scrolljump=5
 
 " Indicate jump out of the screen when 3 lines before end of the screen
-set scrolloff=3
+set scrolloff=10
 
 " Folding options
 set foldmethod=marker
@@ -173,18 +177,26 @@ map <F2> <ESC>:NERDTreeToggle<CR>
 nmap <A-j> <C-w>W<C-e><C-w><C-w>W<C-e><C-w>W
 nmap <A-k> <C-w>W<C-e><C-w><C-w>W<C-y><C-w>W
 
+" Disable arrow keys to force the hands on hjkl
+let vimpureta=1
+if vimpureta
+    map <up> <nop>
+    map <down> <nop>
+    map <left> <nop>
+    map <right> <nop>
+    imap <up> <nop>
+    imap <down> <nop>
+    imap <left> <nop>
+    imap <right> <nop>
+endif
 "}}}
 
-"{{{ ======= Matching & Highlights =======
+"{{{ ======= Highlights =======
 " == Highlights ==
 highlight clear CursorLine SpellBad Cursor
 highlight CursorLine guibg=lightblue ctermbg=238
 highlight SpellBad ctermbg=red term=bold
 highlight Cursor ctermbg=235
-
-" == Match's ==
-" Change the background colour from cursor line
-set cursorline
 
 "}}}
 
@@ -202,4 +214,7 @@ let g:Powerline_symbols = 'unicode'
 " NERDTree preferences
 let g:NERDTreeDirArrows = 1
 let g:NERDTreeShowBookmarks = 1
+
+" SuperTab
+let g:SuperTabDefaultCompletionType = "context"
 "}}}
