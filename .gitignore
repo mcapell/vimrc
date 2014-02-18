@@ -14,3 +14,6 @@ Thumbs.db
 
 # Vi
 .swp
+
+# Ignore plugins directory.
+bundle/
