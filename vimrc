@@ -192,17 +192,22 @@ endif
 "}}}
 
 "{{{ ======= Highlights =======
-" == Highlights ==
+" Cursor Highlights
 highlight clear CursorLine SpellBad Cursor
 highlight CursorLine guibg=lightblue ctermbg=238
 highlight SpellBad ctermbg=red term=bold
 highlight Cursor ctermbg=235
 
+" Highlight after the 80th column
+highlight clear OverLength
+highlight OverLength ctermbg=darkred ctermfg=white guibg=#592929
+autocmd BufWrite,BufRead,BufNewFile * match OverLength /\%81v.\+/
+
 "}}}
 
 "{{{ ======= Plugins =======
-" Plugins added by Pathogen - just add the plugin to .vim/bundle/pluginName/* and
-" plugin will be added.
+" Plugins added by Pathogen - just add the plugin to .vim/bundle/pluginName/*
+" and plugin will be added.
 
 " Plugin preferences
 " snipMate preferences
