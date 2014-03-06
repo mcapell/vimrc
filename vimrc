@@ -47,7 +47,7 @@ set title
 " Status line - Using powerline plugin
 set laststatus=2
 
-" Languajes
+" Languages
 set spelllang=ca,en,es
 
 " Colorscheme
