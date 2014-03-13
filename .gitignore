@@ -17,3 +17,6 @@ Thumbs.db
 
 # Ignore plugins directory.
 bundle/
+
+# Ignore template directory.
+templates/
