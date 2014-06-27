@@ -32,13 +32,13 @@ cd ~/.vim && git submodule init && git submodule update
 
 5. [SuperTab](https://github.com/ervandew/supertab.git)
 
-6. [Vim Colors Solarized](https://github.com/altercation/vim-colors-solarized.git)
+6. [Vim Airline](https://github.com/bling/vim-airline.git)
 
-7. [Vim Fugitive](https://github.com/tpope/vim-fugitive.git)
+7. [Vim Colors Solarized](https://github.com/altercation/vim-colors-solarized.git)
 
-8. [Vim Jade](https://github.com/digitaltoad/vim-jade.git)
+8. [Vim Fugitive](https://github.com/tpope/vim-fugitive.git)
 
-9. [Vim Powerline](https://github.com/Lokaltog/vim-powerline)
+9. [Vim Jade](https://github.com/digitaltoad/vim-jade.git)
 
 10. [Vim Sorround](https://github.com/tpope/vim-surround)
 

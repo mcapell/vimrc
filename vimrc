@@ -78,6 +78,8 @@ set mouse=nicr
 " Templates for programming
 source $HOME/.vim/abbreviations.vim
 
+" Encryption type.
+set cm=blowfish
 "}}}
 
 "{{{ ======= Coding Options =======
@@ -213,8 +215,9 @@ autocmd BufWrite,BufRead,BufNewFile * match OverLength /\%81v.\+/
 " snipMate preferences
 let g:snips_author = 'Marc Capell <marc@nomorecode.com>'
 
-" Powerline preferences
-let g:Powerline_symbols = 'unicode'
+" Airline preferences
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
 
 " NERDTree preferences
 let g:NERDTreeDirArrows = 1
@@ -222,4 +225,7 @@ let g:NERDTreeShowBookmarks = 1
 
 " SuperTab
 let g:SuperTabDefaultCompletionType = "context"
+
+" Vim-gnupg, default recipients.
+let g:GPGDefaultRecipients = ["Marc C <marc.capell@gmail.com>"]
 "}}}
