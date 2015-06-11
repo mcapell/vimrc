@@ -16,7 +16,7 @@ Thumbs.db
 .swp
 
 # Ignore plugins directory.
-bundle/
+plugged/
 
 # Ignore template directory.
 templates/

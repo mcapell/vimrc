@@ -1,23 +1,7 @@
-"Configuració Vim per Marc Capell v1.0 - 17/10/2011
-"Configuració Vim per Marc Capell v1.1 - 13/08/2013
-
 "{{{ ======= Prepend Options =======
-" Setting filetype off, before call pathogen
-:filetype off
-" To disable a plugin, add it's bundle name to the following list
-let g:pathogen_disabled = []
-
-" Disable snipMate on gVim
-if has('gui_running')
-    call add(g:pathogen_disabled, 'snipmate')
-    call add(g:pathogen_disabled, 'nerdtree')
-    call add(g:pathogen_disabled, 'html5')
-endif
-
-" Calling pathogen
-call pathogen#runtime_append_all_bundles()
-call pathogen#infect()
-call pathogen#helptags()
+call plug#begin('~/.vim/plugged')
+source ~/.vim/plugins.vim
+call plug#end()
 
 "}}}
 
@@ -39,10 +23,6 @@ set nocompatible
 
 " Enable plugins
 filetype plugin on
-
-" Custom title
-let &titlestring = "[ vim(Marc::nomorecode) ]"
-set title
 
 " Status line - Using powerline plugin
 set laststatus=2
@@ -75,11 +55,17 @@ set cursorline
 " Let scroll Vim using the mouse.
 set mouse=nicr
 
+" Editing crontab from vim.
+au BufEnter /private/tmp/crontab.* setl backupcopy=yes
+
 " Templates for programming
 source $HOME/.vim/abbreviations.vim
 
 " Encryption type.
 set cm=blowfish
+
+" Disable the annoying error bells.
+set noerrorbells visualbell t_vb=
 "}}}
 
 "{{{ ======= Coding Options =======
@@ -158,15 +144,26 @@ autocmd FileType python inoremap # X#
 " Setting golang as filetype
 au BufNewFile,BufRead *.go set filetype=Go
 
+" ===== Arduino =====
+" Setting Arduino filetype as C
+au BufNewFile,BufRead *.ino set filetype=C
+
 "}}}
 
 "{{{ ======= Mappings =======
 " Toggle Folding
 nnoremap <space> za
 
+" Set C-Right and C-Left
+map <ESC>[5C <C-Right>
+map <ESC>[5D <C-Left>
+
 " Moving along buffers
-map <C-right> <ESC>:bn<CR>
-map <C-left> <ESC>:bp<CR>
+nnoremap <C-right> <ESC>:bn<CR>
+nnoremap <C-left> <ESC>:bp<CR>
+" Moving along buffers (vim way)
+nnoremap <C-l> <ESC>:bn<CR>
+nnoremap <C-h> <ESC>:bp<CR>
 
 " Editing Source/Include files - Prevent the exit if an error occurs
 map gf :edit <cfile><CR>
@@ -202,19 +199,16 @@ highlight Cursor ctermbg=235
 
 " Highlight after the 80th column
 highlight clear OverLength
-highlight OverLength ctermbg=darkred ctermfg=white guibg=#592929
-autocmd BufWrite,BufRead,BufNewFile * match OverLength /\%81v.\+/
+highlight OverLength ctermbg=88 ctermfg=white guibg=#592929
+autocmd BufWrite,BufRead,BufNewFile * match OverLength /\%80v.\+/
+
+" Highlight non-ascii characters
+syntax match nonascii "[^\x00-\x7F]"
+highlight nonascii guibg=Red ctermbg=2
 
 "}}}
 
 "{{{ ======= Plugins =======
-" Plugins added by Pathogen - just add the plugin to .vim/bundle/pluginName/*
-" and plugin will be added.
-
-" Plugin preferences
-" snipMate preferences
-let g:snips_author = 'Marc Capell <marc@nomorecode.com>'
-
 " Airline preferences
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
@@ -227,5 +221,9 @@ let g:NERDTreeShowBookmarks = 1
 let g:SuperTabDefaultCompletionType = "context"
 
 " Vim-gnupg, default recipients.
-let g:GPGDefaultRecipients = ["Marc C <marc.capell@gmail.com>"]
+let g:GPGDefaultRecipients = ["keybase.io/mcapell <mcapell@keybase.io>"]
+
+" Rainbow parentheses.
+autocmd VimEnter * RainbowParenthesesToggle
+autocmd Syntax * RainbowParenthesesLoadRound
 "}}}
