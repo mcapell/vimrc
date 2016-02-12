@@ -185,9 +185,9 @@ highlight clear OverLength
 highlight OverLength ctermbg=88 ctermfg=white guibg=#592929
 autocmd BufWrite,BufRead,BufNewFile * match OverLength /\%80v.\+/
 
-" Highlight non-ascii characters
+" Highlight non-ascii characters
 highlight nonascii guibg=#B398CC ctermbg=54
-autocmd BufRead,BufWrite,BufNewFile python match nonascii "[^\u0000-\u007F]"
+autocmd BufRead,BufWrite,BufNewFile * match nonascii "[^\x00-\x7F]"
 
 "}}}
 
@@ -219,44 +219,5 @@ au BufNewFile,BufRead *.ino set filetype=C
 " Highlight after the 110th column on markdown
 autocmd BufWrite,BufRead,BufNewFile *.md match OverLength /\%110v.\+/
 au BufNewFile,BufRead *.md set textwidth=110
-
-"}}}
-
-"{{{ ======= Plugins =======
-" Airline preferences
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
-
-" NERDTree preferences
-let g:NERDTreeDirArrows = 1
-let g:NERDTreeShowBookmarks = 1
-let g:NERDTreeIgnore=['\.pyc$']
-
-" SuperTab
-let g:SuperTabDefaultCompletionType = "context"
-
-" Vim-gnupg, default recipients.
-let g:GPGDefaultRecipients = ["keybase.io/mcapell <mcapell@keybase.io>"]
-
-" Rainbow parentheses.
-autocmd VimEnter * RainbowParenthesesToggle
-autocmd Syntax * RainbowParenthesesLoadRound
-
-" Rope
-let g:pymode_rope = 0
-
-" Tagbar
-nmap <F8> :TagbarToggle<CR>
-let g:tagbar_left = 1
-let g:tagbar_compact = 1
-let g:tagbar_foldlevel = 1
-let g:tagbar_autofocus = 1
-let g:tagbar_autoshowtag = 1
-
-" CTRL-P
-let g:ctrlp_custom_ignore = {
-  \ 'dir': '\v[\/]\.(git|hg|svn|node_modules|sass-cache|bower_components|build|venv)$',
-  \ 'file': '\v\.(exe|so|dll|pyc)$'
-  \ }
 
 "}}}

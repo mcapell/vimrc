@@ -11,6 +11,6 @@ endfunction
 
 "{{{ ======= Python =======
 "Set breakpoint using pudb module
-imap sbp import pudb ; pudb.set_trace()<CR><ESC>
+autocmd FileType python inoreabbrev pudb import pudb ; pudb.set_trace()<ESC>
 
 "}}}
