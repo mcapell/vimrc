@@ -23,6 +23,7 @@ set t_Co=16
 set nocompatible
 
 " Enable plugins
+filetype on
 filetype plugin on
 
 " Status line - Using powerline plugin
@@ -36,7 +37,7 @@ set background=dark
 colorscheme solarized
 
 " Setting up Omnifunction
-set omnifunc=
+"set omnifunc=
 
 " Unset Swap File
 set noswapfile
@@ -70,7 +71,7 @@ set noerrorbells visualbell t_vb=
 "}}}
 
 "{{{ ======= Coding Options =======
-" Set standard indention
+" Set default indention
 set tabstop=4
 set shiftwidth=4
 
@@ -78,8 +79,8 @@ set shiftwidth=4
 set expandtab
 
 " Auto indent after a {
-set autoindent
 set smartindent
+set autoindent
 
 " Show matching brackets
 set showmatch
@@ -96,28 +97,6 @@ set scrolloff=10
 " Folding options
 set foldmethod=marker
 set foldmarker={{{,}}}
-
-" Super Clever Tab
-" function! SuperCleverTab()
-" "check if at beginning of line or after space
-" if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
-" return "\<Tab>"
-" else
-" "do we have omni completion available
-" if &omnifunc != ''
-" "use omni-completion 1. priority
-" return "\<C-X>\<C-O>"
-" elseif &dictionary != ''
-" "no omni completion, try dictionary completion
-" return "\<C-K>"
-" else
-" "use known-word completion
-" return "\<C-N>"
-" endif
-" endif
-" endfunction
-" "bind function to the tab key
-" inoremap <Tab> <C-R>=SuperCleverTab()<cr>
 
 " Show end-of-line whitespaces
 set list
@@ -136,9 +115,11 @@ map <ESC>[5D <C-Left>
 " Moving along buffers
 nnoremap <C-right> <ESC>:bn<CR>
 nnoremap <C-left> <ESC>:bp<CR>
+
 " Moving along buffers (vim way)
 nnoremap <C-l> <ESC>:bn<CR>
 nnoremap <C-h> <ESC>:bp<CR>
+
 " Fix for NeoVIM
 if has('nvim')
     nnoremap <BS> <ESC>:bp<CR>
@@ -167,6 +148,8 @@ if vimpureta
     imap <down> <nop>
     imap <left> <nop>
     imap <right> <nop>
+    nnoremap <C-right> <nop>
+    nnoremap <C-left> <nop>
 endif
 
 " Avoid ESC key
@@ -180,44 +163,56 @@ highlight CursorLine guibg=lightblue ctermbg=238
 highlight SpellBad ctermbg=red term=bold
 highlight Cursor ctermbg=235
 
-" Highlight after the 80th column
+" Highlight after the 80th column - this line should be highlighted after the character defined below
 highlight clear OverLength
 highlight OverLength ctermbg=88 ctermfg=white guibg=#592929
-autocmd BufWrite,BufRead,BufNewFile * match OverLength /\%80v.\+/
 
-" Highlight non-ascii characters
+" <- Highlight non-ascii characters
 highlight nonascii guibg=#B398CC ctermbg=54
-autocmd BufRead,BufWrite,BufNewFile * match nonascii "[^\x00-\x7F]"
 
 "}}}
 
 "{{{ ======= Code Style: Language Specific Settings =======
+" ===== General and filetypes ====
+" Highlight nonascii characters
+autocmd BufWrite,BufRead,BufNewFile * 2match nonascii "[^\x00-\x7F]"
+" Setting phtml as html filetype
+autocmd BufNewFile,BufRead *.phtml set filetype=html
+" Setting Arduino filetype as C
+autocmd BufNewFile,BufRead *.ino set filetype=C
+" Set rust filetype
+autocmd BufRead,BufNewFile *.rs set filetype=rust
+" Setting golang as filetype
+autocmd BufNewFile,BufRead *.go set filetype=Go
+
 " ===== JavaScript =====
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
+" Highlight after 80th character
+autocmd FileType javascript match OverLength /\%120v.\+/
 
 " ===== HTML / CSS / Jade =====
 autocmd FileType html setlocal shiftwidth=2 tabstop=2
 autocmd FileType css setlocal shiftwidth=2 tabstop=2
 autocmd FileType jade setlocal shiftwidth=2 tabstop=2
 
-" Setting phtml as html filetype
-au BufNewFile,BufRead *.phtml set filetype=html
-
 " ===== Python =====
 " Disable smartindent on # comments.
 autocmd FileType python inoremap # X#
-
-" ===== Golang =====
-" Setting golang as filetype
-au BufNewFile,BufRead *.go set filetype=Go
-
-" ===== Arduino =====
-" Setting Arduino filetype as C
-au BufNewFile,BufRead *.ino set filetype=C
+" Highlight after 80th character
+autocmd FileType python match OverLength /\%80v.\+/
 
 " ===== Markdown =====
 " Highlight after the 110th column on markdown
-autocmd BufWrite,BufRead,BufNewFile *.md match OverLength /\%110v.\+/
-au BufNewFile,BufRead *.md set textwidth=110
+autocmd FileType markdown match OverLength /\%110v.\+/
+" New line after 110th character
+autocmd FileType markdown set textwidth=110
+
+" ===== Rust =====
+" Highlight after 80th character
+autocmd FileType rust match OverLength /\%80v.\+/
+
+" ===== Vim =====
+" Highlight after 80th character
+autocmd FileType vim match OverLength /\%80v.\+/
 
 "}}}
