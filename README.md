@@ -9,7 +9,7 @@ git clone https://github.com/mcapell/vimrc.git ~/.vim
 ### 2. Create symlinks:
 
 ``
-ln -s ~/.vim/vimrc ~/.vimrc && ln -s ~/.vim/gvimrc ~/.gvimrc
+ln -s ~/.vim/vimrc ~/.vimrc
 ``
 
 ### 3. Install plugins:
