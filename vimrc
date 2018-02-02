@@ -68,6 +68,10 @@ source $HOME/.vim/abbreviations.vim
 
 " Disable the annoying error bells.
 set noerrorbells visualbell t_vb=
+
+" Allow to change buffer without saving it
+set hidden
+
 "}}}
 
 "{{{ ======= Coding Options =======
@@ -129,6 +133,7 @@ endif
 map gf :edit <cfile><CR>
 
 " FX Functions
+map <F1> <nop>
 map <F12> <ESC>:help
 map <F2> <ESC>:NERDTreeToggle<CR>
 map <F3> <ESC>:GundoToggle<CR>
@@ -154,6 +159,7 @@ endif
 
 " Avoid ESC key
 imap jk <Esc>
+
 "}}}
 
 "{{{ ======= Highlights =======
@@ -205,7 +211,7 @@ autocmd FileType python match OverLength /\%80v.\+/
 " Highlight after the 110th column on markdown
 autocmd FileType markdown match OverLength /\%110v.\+/
 " New line after 110th character
-autocmd FileType markdown set textwidth=110
+autocmd FileType markdown set textwidth=109
 
 " ===== Rust =====
 " Highlight after 80th character
