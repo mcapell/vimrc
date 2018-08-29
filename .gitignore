@@ -20,3 +20,7 @@ plugged/
 
 # Ignore template directory.
 templates/
+
+.netrwhist
+autoload/plug.vim.old
+spell/

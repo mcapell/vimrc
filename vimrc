@@ -1,4 +1,7 @@
 "{{{ ======= Prepend Options =======
+" Set no compatible, for boosting Vim's capabilities
+set nocompatible
+
 " Load Plug plugin
 call plug#begin('~/.vim/plugged')
 source ~/.vim/plugins.vim
@@ -16,12 +19,6 @@ set backspace=start,eol,indent
 " Syntax on/off
 syntax on
 
-" Color style
-set t_Co=16
-
-" Set no compatible, for boosting Vim's capabilities
-set nocompatible
-
 " Enable plugins
 filetype on
 filetype plugin on
@@ -34,7 +31,7 @@ set spelllang=ca,en,es
 
 " Colorscheme
 set background=dark
-colorscheme solarized
+colorscheme gruvbox
 
 " Setting up Omnifunction
 "set omnifunc=
@@ -71,6 +68,9 @@ set noerrorbells visualbell t_vb=
 
 " Allow to change buffer without saving it
 set hidden
+
+" Spell URL
+let g:spellfile_URL = 'http://ftp.vim.org/vim/runtime/spell'
 
 "}}}
 
@@ -135,8 +135,6 @@ map gf :edit <cfile><CR>
 " FX Functions
 map <F1> <nop>
 map <F12> <ESC>:help
-map <F2> <ESC>:NERDTreeToggle<CR>
-map <F3> <ESC>:GundoToggle<CR>
 
 " Scroll the other window in a Split
 nmap <A-j> <C-w>W<C-e><C-w><C-w>W<C-e><C-w>W
@@ -159,7 +157,6 @@ endif
 
 " Avoid ESC key
 imap jk <Esc>
-
 "}}}
 
 "{{{ ======= Highlights =======
@@ -185,7 +182,7 @@ autocmd BufWrite,BufRead,BufNewFile * 2match nonascii "[^\x00-\x7F]"
 " Setting phtml as html filetype
 autocmd BufNewFile,BufRead *.phtml set filetype=html
 " Setting Arduino filetype as C
-autocmd BufNewFile,BufRead *.ino set filetype=C
+autocmd BufNewFile,BufRead *.ino set filetype=arduino
 " Set rust filetype
 autocmd BufRead,BufNewFile *.rs set filetype=rust
 " Setting golang as filetype
