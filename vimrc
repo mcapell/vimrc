@@ -177,8 +177,6 @@ highlight nonascii guibg=#B398CC ctermbg=54
 
 "{{{ ======= Code Style: Language Specific Settings =======
 " ===== General and filetypes ====
-" Highlight nonascii characters
-autocmd BufWrite,BufRead,BufNewFile * 2match nonascii "[^\x00-\x7F]"
 " Setting phtml as html filetype
 autocmd BufNewFile,BufRead *.phtml set filetype=html
 " Setting Arduino filetype as C
@@ -190,7 +188,7 @@ autocmd BufNewFile,BufRead *.go set filetype=Go
 
 " ===== JavaScript =====
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
-" Highlight after 80th character
+" Highlight after 120th character
 autocmd FileType javascript match OverLength /\%120v.\+/
 
 " ===== HTML / CSS / Jade =====
@@ -202,7 +200,10 @@ autocmd FileType jade setlocal shiftwidth=2 tabstop=2
 " Disable smartindent on # comments.
 autocmd FileType python inoremap # X#
 " Highlight after 80th character
-autocmd FileType python match OverLength /\%80v.\+/
+" NOTE: Deactivated because plugin does the same
+" autocmd FileType python match OverLength /\%80v.\+/
+" Highlight nonascii characters
+autocmd BufWrite,BufRead,BufNewFile *.py 2match nonascii "[^\x00-\x7F]"
 
 " ===== Markdown =====
 " Highlight after the 110th column on markdown
