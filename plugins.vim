@@ -13,7 +13,7 @@ let g:SuperTabClosePreviewOnPopupClose = 1
 
 Plug 'tpope/vim-surround'
 Plug 'natebosch/vim-lsc'
-let g:lsc_server_commands = { 'python': 'pyls', 'rust': 'rustup run nightly rls' }
+let g:lsc_server_commands = { 'python': 'pyls', 'rust': 'rls' }
 
 Plug '/usr/local/opt/fzf'
 Plug '~/.fzf'
@@ -21,6 +21,12 @@ Plug 'junegunn/fzf.vim'
 nnoremap <C-p> :Files<CR>
 nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>a :Ag<CR>
+
+Plug 'mileszs/ack.vim'
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+nnoremap <Leader>k :Ack! "<cword>" <CR>
 
 Plug '~/Development/Apps/vim-worktrack'
 let g:worktrack_timestamp_file = "/tmp/worktrack_ts.txt"
@@ -45,6 +51,8 @@ Plug 'pearofducks/ansible-vim'
 
 " Distraction-free writing
 Plug 'junegunn/goyo.vim'
+
+Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
 
 " Others
 let g:netrw_list_hide= netrw_gitignore#Hide().'.*\.swp$'.'.git/'

@@ -219,4 +219,7 @@ autocmd FileType rust match OverLength /\%80v.\+/
 " Highlight after 80th character
 autocmd FileType vim match OverLength /\%80v.\+/
 
+" ===== VimWiki =====
+autocmd FileType vimwiki set textwidth=80
+
 "}}}
