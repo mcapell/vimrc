@@ -13,7 +13,7 @@ let g:SuperTabClosePreviewOnPopupClose = 1
 
 Plug 'tpope/vim-surround'
 Plug 'natebosch/vim-lsc'
-let g:lsc_server_commands = { 'python': 'pyls', 'rust': 'rls' }
+let g:lsc_server_commands = { 'rust': 'rls' }
 
 Plug '/usr/local/opt/fzf'
 Plug '~/.fzf'
@@ -36,6 +36,11 @@ Plug 'tpope/vim-fugitive'
 Plug 'jreybert/vimagit'
 
 " Language plugins
+Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+let g:pymode_rope = 1
+let g:pymode_syntax = 0
+let g:pymode_python = 'python3'
+
 Plug 'Vimjas/vim-python-pep8-indent', { 'for': 'python' }
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'racer-rust/vim-racer', { 'for': 'rust' }
