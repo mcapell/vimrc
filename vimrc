@@ -33,9 +33,6 @@ set spelllang=ca,en,es
 set background=dark
 colorscheme gruvbox
 
-" Setting up Omnifunction
-"set omnifunc=
-
 " Unset Swap File
 set noswapfile
 

@@ -12,9 +12,6 @@ let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabClosePreviewOnPopupClose = 1
 
 Plug 'tpope/vim-surround'
-Plug 'natebosch/vim-lsc'
-let g:lsc_server_commands = { 'rust': 'rls' }
-
 Plug '/usr/local/opt/fzf'
 Plug '~/.fzf'
 Plug 'junegunn/fzf.vim'
@@ -36,10 +33,17 @@ Plug 'tpope/vim-fugitive'
 Plug 'jreybert/vimagit'
 
 " Language plugins
-Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
-let g:pymode_rope = 1
-let g:pymode_syntax = 0
-let g:pymode_python = 'python3'
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <C-]> :call LanguageClient#textDocument_definition()<CR>
+
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'python': ['~/.local/bin/pyls'],
+    \ }
 
 Plug 'Vimjas/vim-python-pep8-indent', { 'for': 'python' }
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
