@@ -39,7 +39,10 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ }
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 nnoremap <C-]> :call LanguageClient#textDocument_definition()<CR>
+" Refactors
+nnoremap <leader>rr :call LanguageClient#textDocument_rename()<CR>
 
+let g:LanguageClient_settingsPath = expand('~/.vim/lsp_settings.json')
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
     \ 'python': ['~/.local/bin/pyls'],
