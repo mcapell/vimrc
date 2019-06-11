@@ -37,8 +37,9 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 nnoremap <C-]> :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> gs :call LanguageClient#textDocument_hover()<CR>
 " Refactors
 nnoremap <leader>rr :call LanguageClient#textDocument_rename()<CR>
 
@@ -65,6 +66,10 @@ Plug 'pearofducks/ansible-vim'
 Plug 'junegunn/goyo.vim'
 
 Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
+
+Plug 'JamshedVesuna/vim-markdown-preview', {'for': 'markdown'}
+let vim_markdown_preview_hotkey='<C-m>'
+let vim_markdown_preview_pandoc=1
 
 " Others
 let g:netrw_list_hide= netrw_gitignore#Hide().'.*\.swp$'.'.git/'
