@@ -178,10 +178,6 @@ highlight nonascii guibg=#B398CC ctermbg=54
 autocmd BufNewFile,BufRead *.phtml set filetype=html
 " Setting Arduino filetype as C
 autocmd BufNewFile,BufRead *.ino set filetype=arduino
-" Set rust filetype
-autocmd BufRead,BufNewFile *.rs set filetype=rust
-" Setting golang as filetype
-autocmd BufNewFile,BufRead *.go set filetype=Go
 
 " ===== JavaScript =====
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2

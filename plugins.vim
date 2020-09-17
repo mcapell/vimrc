@@ -1,5 +1,6 @@
 " Theme plugins
 Plug 'morhetz/gruvbox'
+let g:gruvbox_contrast_dark = 'hard'
 Plug 'myusuf3/numbers.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -12,8 +13,7 @@ let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabClosePreviewOnPopupClose = 1
 
 Plug 'tpope/vim-surround'
-Plug '/usr/local/opt/fzf'
-Plug '~/.fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 nnoremap <C-p> :Files<CR>
 nnoremap <Leader>f :Files<CR>
@@ -30,37 +30,28 @@ let g:worktrack_timestamp_file = "/tmp/worktrack_ts.txt"
 
 " Git plugins
 Plug 'tpope/vim-fugitive'
-Plug 'jreybert/vimagit'
 
 " Language plugins
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-nnoremap <C-]> :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> gs :call LanguageClient#textDocument_hover()<CR>
-" Refactors
-nnoremap <leader>rr :call LanguageClient#textDocument_rename()<CR>
+Plug 'dense-analysis/ale'
+Plug 'davidhalter/jedi-vim'  " can this be replaced by pyls?
 
-let g:LanguageClient_settingsPath = expand('~/.vim/lsp_settings.json')
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'python': ['~/.local/bin/pyls'],
-    \ }
+let b:ale_linters = ['flake8', 'mypy', 'pylint', 'pyright', 'pyls']
+
+nnoremap <silent> gd :ALEGoToDefinition<CR>
+nnoremap <silent> gs :ALEHover<CR>
 
 Plug 'Vimjas/vim-python-pep8-indent', { 'for': 'python' }
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
-Plug 'racer-rust/vim-racer', { 'for': 'rust' }
-let g:racer_cmd = '~/.cargo/racer/target/release/racer'
-let $RUST_SRC_PATH="~/.cargo/racer/src/"
-
 
 Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
 let g:vimwiki_use_calendar = 1
+"let g:vimwiki_global_ext = 0
 
 Plug 'ledger/vim-ledger'
 Plug 'pearofducks/ansible-vim'
+
+" Debugging
+Plug 'vim-vdebug/vdebug'
 
 " Distraction-free writing
 Plug 'junegunn/goyo.vim'
