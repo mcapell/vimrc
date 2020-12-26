@@ -152,8 +152,6 @@ if vimpureta
     nnoremap <C-left> <nop>
 endif
 
-" Avoid ESC key
-imap jk <Esc>
 "}}}
 
 "{{{ ======= Highlights =======
@@ -206,7 +204,7 @@ autocmd FileType markdown set textwidth=109
 
 " ===== Rust =====
 " Highlight after 80th character
-autocmd FileType rust match OverLength /\%80v.\+/
+autocmd FileType rust match OverLength /\%100v.\+/
 
 " ===== Vim =====
 " Highlight after 80th character

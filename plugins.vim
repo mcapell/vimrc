@@ -16,7 +16,6 @@ Plug 'tpope/vim-surround'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 nnoremap <C-p> :Files<CR>
-nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>a :Ag<CR>
 
 Plug 'mileszs/ack.vim'
@@ -25,20 +24,32 @@ if executable('ag')
 endif
 nnoremap <Leader>k :Ack! "<cword>" <CR>
 
-Plug '~/Development/Apps/vim-worktrack'
-let g:worktrack_timestamp_file = "/tmp/worktrack_ts.txt"
+" Plug '~/Development/Apps/vim-worktrack'
+" let g:worktrack_timestamp_file = "/tmp/worktrack_ts.txt"
 
 " Git plugins
 Plug 'tpope/vim-fugitive'
 
-" Language plugins
+" Programming plugins
 Plug 'dense-analysis/ale'
-Plug 'davidhalter/jedi-vim'  " can this be replaced by pyls?
 
-let b:ale_linters = ['flake8', 'mypy', 'pylint', 'pyright', 'pyls']
+let g:ale_linters = {
+    \ 'go': ['gofmt', 'go vet', 'gopls'],
+    \ 'python': ['mypy', 'pyls'],
+    \ 'rust': ['analyzer'],
+    \ }
+let g:ale_fixers = {
+    \ 'go': ['gofmt'],
+    \ 'python': ['black'],
+    \ 'rust': ['rustfmt'],
+    \ }
+" let g:ale_close_preview_on_insert = 1
 
 nnoremap <silent> gd :ALEGoToDefinition<CR>
 nnoremap <silent> gs :ALEHover<CR>
+nnoremap <silent> gr :ALEFindReferences<CR>
+nnoremap <silent> ff :ALEFix<CR>
+nnoremap <silent> rr :ALERename<CR>
 
 Plug 'Vimjas/vim-python-pep8-indent', { 'for': 'python' }
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
@@ -50,17 +61,14 @@ let g:vimwiki_use_calendar = 1
 Plug 'ledger/vim-ledger'
 Plug 'pearofducks/ansible-vim'
 
-" Debugging
-Plug 'vim-vdebug/vdebug'
+Plug 'hashivim/vim-terraform'
 
-" Distraction-free writing
-Plug 'junegunn/goyo.vim'
+" Debugging
+let g:termdebug_wide=1
+packadd termdebug
+"Plug 'vim-vdebug/vdebug'
 
 Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
-
-Plug 'JamshedVesuna/vim-markdown-preview', {'for': 'markdown'}
-let vim_markdown_preview_hotkey='<C-m>'
-let vim_markdown_preview_pandoc=1
 
 " Others
 let g:netrw_list_hide= netrw_gitignore#Hide().'.*\.swp$'.'.git/'
