@@ -36,9 +36,6 @@ colorscheme gruvbox
 " Unset Swap File
 set noswapfile
 
-" Highlighted search results
-set hlsearch
-
 " Incremental searching
 set incsearch
 
@@ -68,6 +65,9 @@ set hidden
 
 " Spell URL
 let g:spellfile_URL = 'http://ftp.vim.org/vim/runtime/spell'
+
+" Change default menu behaviour
+set completeopt+=noinsert,noselect
 
 "}}}
 
@@ -113,10 +113,6 @@ nnoremap <space> za
 map <ESC>[5C <C-Right>
 map <ESC>[5D <C-Left>
 
-" Moving along buffers
-nnoremap <C-right> <ESC>:bn<CR>
-nnoremap <C-left> <ESC>:bp<CR>
-
 " Moving along buffers (vim way)
 nnoremap <C-l> <ESC>:bn<CR>
 nnoremap <C-h> <ESC>:bp<CR>
@@ -131,11 +127,6 @@ map gf :edit <cfile><CR>
 
 " FX Functions
 map <F1> <nop>
-map <F12> <ESC>:help
-
-" Scroll the other window in a Split
-nmap <A-j> <C-w>W<C-e><C-w><C-w>W<C-e><C-w>W
-nmap <A-k> <C-w>W<C-e><C-w><C-w>W<C-y><C-w>W
 
 " Disable arrow keys to force the hands on hjkl
 let vimpureta=1

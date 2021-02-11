@@ -1,13 +1,14 @@
 " Theme plugins
-Plug 'morhetz/gruvbox'
+Plug 'gruvbox-community/gruvbox'
 let g:gruvbox_contrast_dark = 'hard'
-Plug 'myusuf3/numbers.vim'
+
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 
 " Productivity plugins
+Plug 'myusuf3/numbers.vim'
 Plug 'ervandew/supertab'
 let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabClosePreviewOnPopupClose = 1
@@ -24,6 +25,8 @@ if executable('ag')
 endif
 nnoremap <Leader>k :Ack! "<cword>" <CR>
 
+Plug 'vim-scripts/BufOnly.vim'
+
 " Plug '~/Development/Apps/vim-worktrack'
 " let g:worktrack_timestamp_file = "/tmp/worktrack_ts.txt"
 
@@ -32,31 +35,47 @@ Plug 'tpope/vim-fugitive'
 
 " Programming plugins
 Plug 'dense-analysis/ale'
+set omnifunc=ale#completion#OmniFunc
 
 let g:ale_linters = {
     \ 'go': ['gofmt', 'go vet', 'gopls'],
-    \ 'python': ['mypy', 'pyls'],
+    \ 'python': ['mypy', 'pyflakes'],
     \ 'rust': ['analyzer'],
+    \ 'javascript': ['tsserver'],
     \ }
 let g:ale_fixers = {
     \ 'go': ['gofmt'],
-    \ 'python': ['black'],
+    \ 'python': ['isort', 'black'],
     \ 'rust': ['rustfmt'],
     \ }
-" let g:ale_close_preview_on_insert = 1
+let g:ale_close_preview_on_insert = 1
+let g:ale_python_black_options = '--line-length=79'
 
-nnoremap <silent> gd :ALEGoToDefinition<CR>
-nnoremap <silent> gs :ALEHover<CR>
-nnoremap <silent> gr :ALEFindReferences<CR>
-nnoremap <silent> ff :ALEFix<CR>
-nnoremap <silent> rr :ALERename<CR>
+nnoremap <leader>gd :ALEGoToDefinition<CR>
+nnoremap <leader>gs :ALEHover<CR>
+nnoremap <leader>gr :ALEFindReferences<CR>
+nnoremap <leader>rf :ALEFix<CR>
+nnoremap <leader>rr :ALERename<CR>
+nnoremap <leader>n :ALENext<CR>
+nnoremap <leader>p :ALEPrevious<CR>
+
+
+Plug 'davidhalter/jedi-vim'
+let g:jedi#popup_on_dot = 0
+let g:jedi#usages_command = ''
 
 Plug 'Vimjas/vim-python-pep8-indent', { 'for': 'python' }
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 
 Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
-let g:vimwiki_use_calendar = 1
-"let g:vimwiki_global_ext = 0
+let g:vimwiki_list = [
+    \ {'path': '~/vimwiki/', 'syntax': 'default', 'ext': '.wiki'},
+    \ {'path': '~/vimwiki/Zettelkasten/', 'syntax': 'markdown', 'ext': '.md', 'auto_tags': 1},
+    \ {'path': '~/Hive/education/', 'syntax': 'default', 'ext': '.wiki'}
+    \ ]
+" let g:vimwiki_use_calendar = 1
+let g:vimwiki_global_ext = 0
+nnoremap <leader>wa :execute "edit" vimwiki_list[1].path . strftime("%Y%m%d%H%M%S"). ".md"<CR>
 
 Plug 'ledger/vim-ledger'
 Plug 'pearofducks/ansible-vim'
