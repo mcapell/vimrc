@@ -7,6 +7,9 @@ call plug#begin('~/.vim/plugged')
 source ~/.vim/plugins.vim
 call plug#end()
 
+" Load local vim source files if they exist (i.e: project-specific settings)
+silent! so .vimlocal
+
 "}}}
 
 "{{{ ======= General Options =======
@@ -32,6 +35,11 @@ set spelllang=ca,en,es
 " Colorscheme
 set background=dark
 colorscheme gruvbox
+
+" if filereadable(expand("~/.vimrc_background")) && g:base16
+"     let base16colorspace=256
+"     source ~/.vimrc_background
+" endif
 
 " Unset Swap File
 set noswapfile
@@ -203,5 +211,8 @@ autocmd FileType vim match OverLength /\%80v.\+/
 
 " ===== VimWiki =====
 autocmd FileType vimwiki set textwidth=80
+
+" ===== LaTeX =====
+autocmd FileType tex set textwidth=70
 
 "}}}
