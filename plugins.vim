@@ -22,10 +22,10 @@ nnoremap <C-p> :Files<CR>
 nnoremap <Leader>a :Ag<CR>
 
 Plug 'mileszs/ack.vim'
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
-nnoremap <Leader>k :Ack! "<cword>" <CR>
+"if executable('ag')
+"  let g:ackprg = 'ag --vimgrep'
+"endif
+"nnoremap <Leader>k :Ack! "<cword>" <CR>
 
 Plug 'vim-scripts/BufOnly.vim'
 
