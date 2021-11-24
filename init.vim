@@ -28,12 +28,12 @@ nnoremap <Leader>k :Ack! "<cword>" <CR>
 Plug 'tpope/vim-fugitive'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'neovim/nvim-lspconfig'
-"Plug 'hrsh7th/nvim-compe'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
-Plug 'L3MON4D3/LuaSnip'
+Plug 'dcampos/nvim-snippy'
+"Plug 'dcampos/cmp-snippy'
 Plug 'mhartington/formatter.nvim'
 Plug 'jpalardy/vim-slime'
 
@@ -128,7 +128,7 @@ local cmp = require'cmp'
 cmp.setup({
     snippet = {
         expand = function(args)
-          require'luasnip'.lsp_expand(args.body)
+          require'snippy'.expand_snippet(args.body)
         end,
     },
     completion = {
@@ -161,6 +161,7 @@ cmp.setup({
     },
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
+    }, {
         { name = 'buffer' },
         { name = 'path' },
     }),
