@@ -3,10 +3,8 @@ call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 
 " Theme plugins
 Plug 'itchyny/lightline.vim'
-Plug 'arcticicestudio/nord-vim'
 let g:nord_uniform_diff_background = 1
 let g:nord_italic_comments = 1
-Plug 'chriskempson/base16-vim'
 Plug 'romainl/Apprentice'
 
 " Productivity plugins
@@ -14,15 +12,15 @@ Plug 'myusuf3/numbers.vim'
 
 Plug 'tpope/vim-surround'
 Plug 'vim-scripts/BufOnly.vim'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-nnoremap <C-p> :Files<CR>
-nnoremap <Leader>a :Rg<CR>
-Plug 'mileszs/ack.vim'
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
-nnoremap <Leader>k :Ack! "<cword>" <CR>
+Plug 'nvim-telescope/telescope.nvim' | Plug 'nvim-lua/plenary.nvim'
+nnoremap <C-p> <cmd>Telescope find_files<cr>
+nnoremap <leader>k <cmd>Telescope grep_string<cr>
+nnoremap <leader>a <cmd>Telescope live_grep<cr>
+nnoremap <leader>cr <cmd>Telescope lsp_references<cr>
+nnoremap <leader>cd <cmd>Telescope lsp_document_diagnostics<cr>
+nnoremap <leader>cw <cmd>Telescope lsp_workspace_diagnostics<cr>
+
+Plug 'vhyrro/neorg', { 'branch': 'unstable' } | Plug 'nvim-lua/plenary.nvim'
 
 " Programming plugins
 Plug 'tpope/vim-fugitive'
@@ -31,38 +29,18 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
-Plug 'dcampos/nvim-snippy'
-"Plug 'dcampos/cmp-snippy'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'rafamadriz/friendly-snippets'
 Plug 'mhartington/formatter.nvim'
-Plug 'jpalardy/vim-slime'
 
 Plug 'vim-test/vim-test'
 nnoremap <leader>tt :TestNearest<CR>
 nnoremap <leader>tf :TestFile<CR>
 nnoremap <leader>ta :TestSuite<CR>
-Plug 'rust-lang/rust.vim', { 'for': 'rust' }
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoUpdateBinaries' }
 
 Plug 'reedes/vim-pencil'
-Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
-let g:vimwiki_list = [
-    \ {'path': '~/vimwiki/', 'syntax': 'default', 'ext': '.wiki'},
-    \ {'path': '~/Knowledge/Zettelkasten/', 'syntax': 'markdown', 'ext': '.md', 'auto_tags': 1},
-    \ {'path': '~/Hive/education/', 'syntax': 'default', 'ext': '.wiki'}
-    \ ]
-let g:vimwiki_global_ext = 0
-
-Plug 'lifepillar/vim-outlaw'
-let g:outlaw_fenced_filetypes = ['sql', 'python', 'go']
-nnoremap <leader>wd O<C-R>=strftime("=== %Y-%m-%d %a")<ESC>
-
-Plug 'vhyrro/neorg', { 'branch': 'unstable' } | Plug 'nvim-lua/plenary.nvim'
-
-Plug 'ledger/vim-ledger'
-Plug 'pearofducks/ansible-vim'
-
-Plug 'hashivim/vim-terraform'
 
 " Debugging
 "let g:termdebug_wide=1
@@ -79,10 +57,6 @@ nnoremap <silent> <leader>db :lua require'dap'.toggle_breakpoint()<CR>
 
 
 Plug 'lervag/vimtex', { 'for': 'tex' }
-
-" Others
-let g:netrw_list_hide= netrw_gitignore#Hide().'.*\.swp$'.'.git/'
-nnoremap <F2> <ESC>:Ex<CR>
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -112,7 +86,7 @@ local on_attach = function(_, bufnr)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gs', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'rr', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rr', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>p', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>n', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
 end
@@ -128,12 +102,13 @@ local cmp = require'cmp'
 cmp.setup({
     snippet = {
         expand = function(args)
-          require'snippy'.expand_snippet(args.body)
+          -- require'snippy'.expand_snippet(args.body)
+          vim.fn["vsnip#anonymous"](args.body)
         end,
     },
-    completion = {
-        autocomplete = true,
-    },
+    -- completion = {
+    --     autocomplete = true,
+    -- },
     mapping = {
         ['<C-e>'] = cmp.mapping({
             i = cmp.mapping.abort(),
@@ -161,9 +136,10 @@ cmp.setup({
     },
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
+        { name = 'vsnip' },
     }, {
-        { name = 'buffer' },
         { name = 'path' },
+        { name = 'buffer' },
     }),
 })
 
@@ -184,6 +160,7 @@ for _, lsp in ipairs(servers) do
 end
 
 require'nvim-treesitter.configs'.setup {
+    ensure_installed = { 'go', 'python', 'rust', 'yaml', 'hcl', 'norg', 'ledger' },
     highlight = {
         enable = true
     },
@@ -211,28 +188,26 @@ require('formatter').setup({
 
 EOF
 
-autocmd FileType go autocmd BufWritePre <buffer> Format
-
 " Debugger
 lua require('dap-go').setup()
 lua require("dapui").setup()
 
 " Neorg configuration
 lua << EOF
-    require('neorg').setup {
-        -- Tell Neorg what modules to load
-        load = {
-            ["core.defaults"] = {}, -- Load all the default modules
-            ["core.norg.concealer"] = {}, -- Allows for use of icons
-            ["core.norg.dirman"] = { -- Manage your directories with Neorg
-                config = {
-                    workspaces = {
-                        Zettelkasten = "~/Hive/zettelkasten"
+require('neorg').setup {
+    -- Tell Neorg what modules to load
+    load = {
+        ["core.defaults"] = {}, -- Load all the default modules
+        ["core.norg.concealer"] = {}, -- Allows for use of icons
+        ["core.norg.dirman"] = { -- Manage your directories with Neorg
+            config = {
+                workspaces = {
+                    Zettelkasten = "~/Hive/zettelkasten"
                     }
                 }
-            }
-        },
-    }
+            },
+    },
+}
 EOF
 
 augroup pencil
@@ -343,6 +318,15 @@ set foldmarker={{{,}}}
 " Show end-of-line whitespaces
 set list
 set listchars=tab:\|\ ,trail:·
+
+" Customize netrw
+nnoremap <F2> <ESC>:Ex<CR>
+nnoremap <leader>e <ESC>:Ex<CR>
+let g:netrw_list_hide= netrw_gitignore#Hide().'.*\.swp$'.'.git/'
+let g:netrw_liststyle = 3
+let g:netrw_banner = 0
+" let g:netrw_browse_split = 1
+" let g:netrw_winsize = 25
 
 "}}}
 
