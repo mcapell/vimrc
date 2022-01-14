@@ -17,10 +17,7 @@ nnoremap <C-p> <cmd>Telescope find_files<cr>
 nnoremap <leader>k <cmd>Telescope grep_string<cr>
 nnoremap <leader>a <cmd>Telescope live_grep<cr>
 nnoremap <leader>cr <cmd>Telescope lsp_references<cr>
-nnoremap <leader>cd <cmd>Telescope lsp_document_diagnostics<cr>
-nnoremap <leader>cw <cmd>Telescope lsp_workspace_diagnostics<cr>
-
-Plug 'vhyrro/neorg', { 'branch': 'unstable' } | Plug 'nvim-lua/plenary.nvim'
+nnoremap <leader>cd <cmd>Telescope diagnostics<cr>
 
 " Programming plugins
 Plug 'tpope/vim-fugitive'
@@ -33,6 +30,8 @@ Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'rafamadriz/friendly-snippets'
 Plug 'mhartington/formatter.nvim'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'knsh14/vim-github-link'
 
 Plug 'vim-test/vim-test'
 nnoremap <leader>tt :TestNearest<CR>
@@ -65,17 +64,6 @@ call plug#end()
 " {{{ ======= Plugin configurations =======
 
 lua << EOF
-
-local parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
-
-parser_configs.norg = {
-    install_info = {
-        url = "https://github.com/vhyrro/tree-sitter-norg",
-        files = { "src/parser.c", "src/scanner.cc" },
-        branch = "main"
-    },
-}
-
 local nvim_lsp = require('lspconfig')
 
 local on_attach = function(_, bufnr)
@@ -89,6 +77,7 @@ local on_attach = function(_, bufnr)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rr', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>p', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>n', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>s', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
 end
 
 -- Setup nvim-cmp.
@@ -148,7 +137,7 @@ local capabilities = require('cmp_nvim_lsp').update_capabilities(
     vim.lsp.protocol.make_client_capabilities()
 )
 
-local servers = { 'pyright', 'rust_analyzer', 'tsserver', 'gopls' }
+local servers = { 'pyright', 'rust_analyzer', 'tsserver', 'gopls', 'terraformls' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     capabilities = capabilities,
@@ -159,12 +148,37 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+vim.o.updatetime = 250
+vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false})]]
+
+
+nvim_lsp['golangci_lint_ls'].setup {
+  capabilities = capabilities,
+  on_attach = on_attach,
+  flags = {
+    debounce_text_changes = 150,
+  },
+  init_options = {
+    command = { "golangci-lint", "run", "--out-format", "json" }
+  }
+}
+
 require'nvim-treesitter.configs'.setup {
-    ensure_installed = { 'go', 'python', 'rust', 'yaml', 'hcl', 'norg', 'ledger' },
+    ensure_installed = { 'go', 'python', 'rust', 'yaml', 'hcl', 'ledger' },
     highlight = {
         enable = true
     },
+    indent = {
+        enable = true
+    },
 }
+
+-- Telescope
+require('telescope').setup({
+    defaults = {
+        file_ignore_patterns = {"vendor"},
+    },
+})
 
 -- Formatter
 vim.api.nvim_set_keymap('n', '<leader>rf', '<cmd>Format<CR>', { noremap=true, silent=true })
@@ -178,37 +192,35 @@ require('formatter').setup({
             function()
                 return {
                     exe = "gofmt",
-                    -- args = {"--emit=stdout"},
                     stdin = true
                 }
             end
-        }
+        },
+        terraform = {
+            function()
+                return {
+                    exe = "terraform",
+                    args = {"fmt", "-"},
+                    stdin = true,
+                }
+            end
+        },
     }
 })
 
+vim.api.nvim_exec([[
+augroup FormatAutogroup
+  autocmd!
+  autocmd BufWritePre *.tf,*.tfvars FormatWrite
+augroup END
+]], true)
+
 EOF
+
 
 " Debugger
 lua require('dap-go').setup()
 lua require("dapui").setup()
-
-" Neorg configuration
-lua << EOF
-require('neorg').setup {
-    -- Tell Neorg what modules to load
-    load = {
-        ["core.defaults"] = {}, -- Load all the default modules
-        ["core.norg.concealer"] = {}, -- Allows for use of icons
-        ["core.norg.dirman"] = { -- Manage your directories with Neorg
-            config = {
-                workspaces = {
-                    Zettelkasten = "~/Hive/zettelkasten"
-                    }
-                }
-            },
-    },
-}
-EOF
 
 augroup pencil
   autocmd!
@@ -416,5 +428,4 @@ autocmd FileType tex set textwidth=70
 
 " ===== Jenkins =====
 autocmd BufRead,BufNewFile *.Jenkinsfile set filetype=groovy
-
 "}}}
