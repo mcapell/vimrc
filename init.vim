@@ -18,6 +18,8 @@ nnoremap <leader>k <cmd>Telescope grep_string<cr>
 nnoremap <leader>a <cmd>Telescope live_grep<cr>
 nnoremap <leader>cr <cmd>Telescope lsp_references<cr>
 nnoremap <leader>cd <cmd>Telescope diagnostics<cr>
+Plug 'preservim/nerdtree'
+let NERDTreeQuitOnOpen=1
 
 " Programming plugins
 Plug 'tpope/vim-fugitive'
@@ -159,8 +161,8 @@ nvim_lsp['golangci_lint_ls'].setup {
     debounce_text_changes = 150,
   },
   init_options = {
-    command = { "golangci-lint", "run", "--out-format", "json" }
-  }
+    command = { "golangci-lint", "run", "--out-format", "json" },
+  },
 }
 
 require'nvim-treesitter.configs'.setup {
@@ -332,8 +334,7 @@ set list
 set listchars=tab:\|\ ,trail:·
 
 " Customize netrw
-nnoremap <F2> <ESC>:Ex<CR>
-nnoremap <leader>e <ESC>:Ex<CR>
+nnoremap <leader>e <ESC>:NERDTreeToggle<CR>
 let g:netrw_list_hide= netrw_gitignore#Hide().'.*\.swp$'.'.git/'
 let g:netrw_liststyle = 3
 let g:netrw_banner = 0
