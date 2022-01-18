@@ -18,8 +18,9 @@ nnoremap <leader>k <cmd>Telescope grep_string<cr>
 nnoremap <leader>a <cmd>Telescope live_grep<cr>
 nnoremap <leader>cr <cmd>Telescope lsp_references<cr>
 nnoremap <leader>cd <cmd>Telescope diagnostics<cr>
-Plug 'preservim/nerdtree'
-let NERDTreeQuitOnOpen=1
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'kyazdani42/nvim-tree.lua'
+let g:nvim_tree_quit_on_open = 1
 
 " Programming plugins
 Plug 'tpope/vim-fugitive'
@@ -139,7 +140,8 @@ local capabilities = require('cmp_nvim_lsp').update_capabilities(
     vim.lsp.protocol.make_client_capabilities()
 )
 
-local servers = { 'pyright', 'rust_analyzer', 'tsserver', 'gopls', 'terraformls' }
+
+local servers = { 'pyright', 'rust_analyzer', 'tsserver', 'gopls', 'terraformls', 'golangci_lint_ls' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     capabilities = capabilities,
@@ -152,18 +154,6 @@ end
 
 vim.o.updatetime = 250
 vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false})]]
-
-
-nvim_lsp['golangci_lint_ls'].setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-  flags = {
-    debounce_text_changes = 150,
-  },
-  init_options = {
-    command = { "golangci-lint", "run", "--out-format", "json" },
-  },
-}
 
 require'nvim-treesitter.configs'.setup {
     ensure_installed = { 'go', 'python', 'rust', 'yaml', 'hcl', 'ledger' },
@@ -216,6 +206,9 @@ augroup FormatAutogroup
   autocmd BufWritePre *.tf,*.tfvars FormatWrite
 augroup END
 ]], true)
+
+-- File manager
+require'nvim-tree'.setup{}
 
 EOF
 
@@ -334,7 +327,7 @@ set list
 set listchars=tab:\|\ ,trail:·
 
 " Customize netrw
-nnoremap <leader>e <ESC>:NERDTreeToggle<CR>
+nnoremap <leader>e <ESC>:NvimTreeToggle<CR>
 let g:netrw_list_hide= netrw_gitignore#Hide().'.*\.swp$'.'.git/'
 let g:netrw_liststyle = 3
 let g:netrw_banner = 0
