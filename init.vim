@@ -3,8 +3,12 @@ call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 
 " Theme plugins
 Plug 'itchyny/lightline.vim'
-let g:nord_uniform_diff_background = 1
-let g:nord_italic_comments = 1
+let g:lightline = {
+  \ 'colorscheme': 'wombat',
+  \ 'active': {
+  \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'relativepath', 'modified' ] ],
+  \ }
+  \ }
 Plug 'romainl/Apprentice'
 
 " Productivity plugins
@@ -26,6 +30,7 @@ let g:nvim_tree_quit_on_open = 1
 Plug 'tpope/vim-fugitive'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'neovim/nvim-lspconfig'
+Plug 'onsails/lspkind-nvim'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
@@ -89,41 +94,36 @@ local has_words_before = function()
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
+local lspkind = require('lspkind')
 local cmp = require'cmp'
+local source_mapping = {
+  buffer = "[Buffer]",
+  nvim_lsp = "[LSP]",
+  path = "[Path]",
+}
 
 cmp.setup({
     snippet = {
         expand = function(args)
-          -- require'snippy'.expand_snippet(args.body)
           vim.fn["vsnip#anonymous"](args.body)
         end,
     },
-    -- completion = {
-    --     autocomplete = true,
-    -- },
+    formatting = {
+        format = function(entry, vim_item)
+            vim_item.kind = lspkind.presets.default[vim_item.kind]
+            vim_item.menu = source_mapping[entry.source.name]
+            return vim_item
+        end,
+    },
     mapping = {
-        ['<C-e>'] = cmp.mapping({
-            i = cmp.mapping.abort(),
-            c = cmp.mapping.close(),
-        }),
         ['<CR>'] = cmp.mapping.confirm({
           select = true
         }),
         ['<Tab>'] = function(fallback)
-          if cmp.visible() then
             cmp.select_next_item()
-          elseif has_words_before() then
-            cmp.complete()
-          else
-            fallback()
-          end
         end,
         ['<S-Tab>'] = function(fallback)
-          if cmp.visible() then
             cmp.select_prev_item()
-          else
-            fallback()
-          end
         end,
     },
     sources = cmp.config.sources({
@@ -203,7 +203,7 @@ require('formatter').setup({
 vim.api.nvim_exec([[
 augroup FormatAutogroup
   autocmd!
-  autocmd BufWritePre *.tf,*.tfvars FormatWrite
+  autocmd BufWritePost *.tf,*.tfvars FormatWrite
 augroup END
 ]], true)
 

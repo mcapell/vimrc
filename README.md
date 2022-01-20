@@ -14,11 +14,7 @@ bash install.sh
 
 ### 3. Install plugins:
 
-Open vim and type:
-
-``
-:PlugInstall
-``
+vim +PlugInstall
 
 # Plugins:
 
