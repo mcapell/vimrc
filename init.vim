@@ -10,6 +10,7 @@ let g:lightline = {
   \ }
   \ }
 Plug 'romainl/Apprentice'
+Plug 'chriskempson/base16-vim'
 
 " Productivity plugins
 Plug 'myusuf3/numbers.vim'
@@ -119,12 +120,8 @@ cmp.setup({
         ['<CR>'] = cmp.mapping.confirm({
           select = true
         }),
-        ['<Tab>'] = function(fallback)
-            cmp.select_next_item()
-        end,
-        ['<S-Tab>'] = function(fallback)
-            cmp.select_prev_item()
-        end,
+        ['<Tab>'] = cmp.mapping.select_next_item(),
+        ['<S-Tab>'] = cmp.mapping.select_prev_item(),
     },
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
@@ -255,8 +252,14 @@ let uname = substitute(system('uname'), '\n', '', '')
 if uname == 'Linux'
     set termguicolors
 endif
-set background=dark
-colorscheme apprentice
+let theme='dark'
+if theme == 'dark'
+    set background=dark
+    colorscheme apprentice
+else
+    set background=light
+    colorscheme base16-solarized-light
+endif
 
 " Unset Swap File
 set noswapfile
