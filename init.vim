@@ -10,7 +10,8 @@ let g:lightline = {
   \ }
   \ }
 Plug 'romainl/Apprentice'
-Plug 'chriskempson/base16-vim'
+Plug 'habamax/vim-psionic'
+nnoremap <leader>sc :source $MYVIMRC<CR>
 
 " Productivity plugins
 Plug 'myusuf3/numbers.vim'
@@ -21,11 +22,14 @@ Plug 'nvim-telescope/telescope.nvim' | Plug 'nvim-lua/plenary.nvim'
 nnoremap <C-p> <cmd>Telescope find_files<cr>
 nnoremap <leader>k <cmd>Telescope grep_string<cr>
 nnoremap <leader>a <cmd>Telescope live_grep<cr>
-nnoremap <leader>cr <cmd>Telescope lsp_references<cr>
 nnoremap <leader>cd <cmd>Telescope diagnostics<cr>
+nnoremap gi <cmd>Telescope lsp_implementations<cr>
+nnoremap gD <cmd>Telescope lsp_type_definitions<cr>
+nnoremap gd <cmd>Telescope lsp_definitions<cr>
+nnoremap gr <cmd>Telescope lsp_references<cr>
+nnoremap ca <cmd>Telescope lsp_code_actions<cr>
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'kyazdani42/nvim-tree.lua'
-let g:nvim_tree_quit_on_open = 1
 
 " Programming plugins
 Plug 'tpope/vim-fugitive'
@@ -37,10 +41,13 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
+Plug 'golang/vscode-go'
 Plug 'rafamadriz/friendly-snippets'
 Plug 'mhartington/formatter.nvim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'knsh14/vim-github-link'
+Plug 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
+Plug 'ray-x/lsp_signature.nvim'
 
 Plug 'vim-test/vim-test'
 nnoremap <leader>tt :TestNearest<CR>
@@ -80,13 +87,16 @@ local on_attach = function(_, bufnr)
 
     local opts = { noremap=true, silent=true }
     -- LSP Commands
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gs', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rr', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>p', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>n', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>s', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>p', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>n', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+    -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+    -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+    -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+    -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+    -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+    -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>s', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
 end
 
 -- Setup nvim-cmp.
@@ -137,7 +147,8 @@ local capabilities = require('cmp_nvim_lsp').update_capabilities(
     vim.lsp.protocol.make_client_capabilities()
 )
 
-
+-- Server and it's configurations can be found here:
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 local servers = { 'pyright', 'rust_analyzer', 'tsserver', 'gopls', 'terraformls', 'golangci_lint_ls' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
@@ -149,11 +160,24 @@ for _, lsp in ipairs(servers) do
   }
 end
 
-vim.o.updatetime = 250
-vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false})]]
+-- vim.o.updatetime = 250
+-- vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false})]]
+require('lsp_lines').register_lsp_virtual_lines()
+vim.diagnostic.config({
+  virtual_text = false,
+})
+vim.diagnostic.config({ virtual_lines = { prefix = "" } })
+
+require'lsp_signature'.setup({
+    bind = true, -- This is mandatory, otherwise border config won't get registered.
+    handler_opts = {
+        border = "rounded"
+    },
+    timer_interval = 500,
+})
 
 require'nvim-treesitter.configs'.setup {
-    ensure_installed = { 'go', 'python', 'rust', 'yaml', 'hcl', 'ledger' },
+    ensure_installed = { 'go', 'gomod', 'python', 'rust', 'yaml', 'hcl', 'ledger' },
     highlight = {
         enable = true
     },
@@ -165,7 +189,12 @@ require'nvim-treesitter.configs'.setup {
 -- Telescope
 require('telescope').setup({
     defaults = {
-        file_ignore_patterns = {"vendor"},
+        file_ignore_patterns = {".git/"},
+    },
+    pickers = {
+        find_files = {
+            hidden = true
+        },
     },
 })
 
@@ -205,7 +234,14 @@ augroup END
 ]], true)
 
 -- File manager
-require'nvim-tree'.setup{}
+require'nvim-tree'.setup{
+    actions = {
+        open_file = {
+            quit_on_open = true,
+        },
+    },
+}
+
 
 EOF
 
@@ -256,9 +292,10 @@ let theme='dark'
 if theme == 'dark'
     set background=dark
     colorscheme apprentice
+    hi Comment ctermbg=NONE ctermfg=242 cterm=NONE guibg=NONE guifg=#6c6c6c gui=NONE
 else
     set background=light
-    colorscheme base16-solarized-light
+    colorscheme psionic
 endif
 
 " Unset Swap File
@@ -328,6 +365,7 @@ set foldmarker={{{,}}}
 " Show end-of-line whitespaces
 set list
 set listchars=tab:\|\ ,trail:·
+autocmd FileType go,gomod set listchars=tab:\ \ ,trail:·
 
 " Customize netrw
 nnoremap <leader>e <ESC>:NvimTreeToggle<CR>
