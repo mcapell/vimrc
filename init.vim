@@ -41,13 +41,13 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
 Plug 'golang/vscode-go'
 Plug 'rafamadriz/friendly-snippets'
 Plug 'mhartington/formatter.nvim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'knsh14/vim-github-link'
 Plug 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
-Plug 'ray-x/lsp_signature.nvim'
 
 Plug 'vim-test/vim-test'
 nnoremap <leader>tt :TestNearest<CR>
@@ -91,12 +91,6 @@ local on_attach = function(_, bufnr)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rr', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>p', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>n', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-    -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-    -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-    -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-    -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-    -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-    -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>s', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
 end
 
 -- Setup nvim-cmp.
@@ -105,11 +99,16 @@ local has_words_before = function()
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
+local feedkey = function(key, mode)
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
+end
+
 local lspkind = require('lspkind')
 local cmp = require'cmp'
 local source_mapping = {
   buffer = "[Buffer]",
   nvim_lsp = "[LSP]",
+  nvim_lsp_signature_help = "[LSP]",
   path = "[Path]",
 }
 
@@ -128,16 +127,32 @@ cmp.setup({
     },
     mapping = {
         ['<CR>'] = cmp.mapping.confirm({
-          select = true
+          select = false
         }),
-        ['<Tab>'] = cmp.mapping.select_next_item(),
-        ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+        ["<Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item()
+          elseif vim.fn["vsnip#available"](1) == 1 then
+            feedkey("<Plug>(vsnip-expand-or-jump)", "")
+          elseif has_words_before() then
+            cmp.complete()
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
+        ["<S-Tab>"] = cmp.mapping(function()
+          if cmp.visible() then
+            cmp.select_prev_item()
+          elseif vim.fn["vsnip#jumpable"](-1) == 1 then
+            feedkey("<Plug>(vsnip-jump-prev)", "")
+          end
+        end, { "i", "s" }),
     },
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
         { name = 'vsnip' },
+        { name = 'nvim_lsp_signature_help' },
     }, {
-        { name = 'path' },
         { name = 'buffer' },
     }),
 })
@@ -168,22 +183,14 @@ vim.diagnostic.config({
 })
 vim.diagnostic.config({ virtual_lines = { prefix = "" } })
 
-require'lsp_signature'.setup({
-    bind = true, -- This is mandatory, otherwise border config won't get registered.
-    handler_opts = {
-        border = "rounded"
-    },
-    timer_interval = 500,
-})
-
 require'nvim-treesitter.configs'.setup {
     ensure_installed = { 'go', 'gomod', 'python', 'rust', 'yaml', 'hcl', 'ledger' },
     highlight = {
         enable = true
     },
-    indent = {
-        enable = true
-    },
+    -- indent = {
+    --     enable = true
+    -- },
 }
 
 -- Telescope
@@ -329,7 +336,7 @@ set hidden
 " let g:spellfile_URL = 'http://ftp.vim.org/vim/runtime/spell'
 
 " Change default menu behaviour
-" set completeopt+=noinsert,noselect
+set completeopt=menu,menuone,noselect
 
 "}}}
 
